@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model='ir.ui.view' id='view_event_form_inherit_for_ticket_type'>
+        <field name="name">event.event.form.inherit</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='event_mail_ids']/tree//field[@name='notification_type']" position="after">
+                <field name="ticket_ids" widget="many2many_tags" domain="[('event_id','=',event_id)]"/>
+                <field name="event_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
