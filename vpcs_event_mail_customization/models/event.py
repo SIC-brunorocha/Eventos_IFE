@@ -18,7 +18,7 @@ class EventMailScheduler(models.Model):
                 if lines:
                     mail.write({'mail_registration_ids': lines})
                 # execute scheduler on registrations
-                mail.mail_registration_ids.filtered(lambda r : r.registration_id.event_ticket_id in mail.ticket_ids.ids).execute()
+                mail.mail_registration_ids.filtered(lambda r : r.registration_id.event_ticket_id.id in mail.ticket_ids.ids).execute()
             else:
                 # Do not send emails if the mailing was scheduled before the event but the event is over
                 if not mail.mail_sent and mail.scheduled_date <= now and mail.notification_type == 'mail' and \
