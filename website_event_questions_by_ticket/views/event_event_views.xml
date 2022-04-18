@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2019 Tecnativa - Pedro M. Baeza
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <data>
+
+
+
+        <record model="ir.ui.view" id="view_event_form_inherit_question">
+            <field name="name">event.event.form.view.inherit</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="website_event_questions.event_event_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='questions']" position="replace">
+                    <page string="Questions" name="questions">
+                        <field name="question_ids" nolabel="1">
+                            <tree>
+                                <field name="sequence" widget="handle" />
+                                <field name="title"/>
+                                <field name="once_per_order"/>
+                                <field name="question_type" string="Type" />
+                                <field name="answer_ids" widget="many2many_tags"
+                                    attrs="{'invisible': [('question_type', '!=', 'simple_choice')]}" />
+                                <field name="restricted_ticket_ids" widget="many2many_tags"/>
+                                <button name="action_view_question_answers" type="object" class="fa fa-bar-chart p-0" title="Answer Breakdown" />
+                            </tree>
+                            <!-- Need to repeat the whole tree form here to be able to create answers properly
+                                Without this, the sub-fields of answer_ids are unknown to the web framework.
+                                We need this because we create questions and answers when the event type changes. -->
+                            <form string="Question">
+                                <sheet>
+                                    <h1><field name="title" /></h1>
+                                    <group class="mb-0">
+                                        <group class="mb-0">
+                                            <div colspan="2">
+                                                <field name="once_per_order"/>
+                                                <label for="once_per_order"/>
+                                            </div>
+                                            <field name="question_type" widget="radio" options="{'horizontal': true}" />
+                                            <field name="restricted_ticket_ids" widget="many2many_tags"/>
+                                        </group>
+                                    </group>
+                                    <notebook attrs="{'invisible': [('question_type', '!=', 'simple_choice')]}">
+                                        <page string="Answers" name="answers">
+                                            <field name="answer_ids">
+                                                <tree editable="bottom">
+                                                    <!-- 'display_name' is necessary for the many2many_tags to work on the event view -->
+                                                    <field name="display_name" invisible="1" />
+                                                    <field name="sequence" widget="handle" />
+                                                    <field name="name"/>
+                                                </tree>
+                                            </field>
+                                        </page>
+                                    </notebook>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+
+</odoo>
